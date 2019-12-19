@@ -1,0 +1,102 @@
+swagger: '2.0'
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: rdsh API
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: спорт.рдш.рф
+basePath: /api/v1
+tags:
+  - name: all users
+    description: Operations available to regular users
+schemes:
+  - https
+paths:
+  /rdsh/site-statistic:
+    get:
+      tags:
+        - all users
+      summary: Статистика по школам и студентам
+      description: |
+        Получить статистику зарегестрированных школ и студентов
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: Статистика студентов и школ
+          schema:
+            $ref: '#/definitions/StatisticsItem'
+        '400':
+          description: bad input parameter
+  /rdsh/student-ranking:
+    get:
+      tags:
+        - all users
+      summary: Рейтинг студентов
+      description: Поиск студентов по параметрам
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: Студенты
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Student'
+  '/rdsh/student-ranking/{id}':
+    get:
+      tags:
+        - all users
+      summary: Рейтинг студента по id
+      description: Поиск студента по id
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Студент
+          schema:
+            $ref: '#/definitions/Student'
+definitions:
+  StatisticsItem:
+    type: object
+    required:
+      - schools
+      - students
+    properties:
+      schools:
+        type: integer
+        format: int32
+        example: 3012
+      students:
+        type: integer
+        format: int32
+        example: 270
+  Student:
+    type: object
+    required:
+      - first_name
+      - id
+      - last_name
+    properties:
+      id:
+        type: integer
+        format: int32
+        example: 12
+      first_name:
+        type: string
+        example: Антон
+      last_name:
+        type: string
+        example: Смирнов
